@@ -19,6 +19,19 @@ void pio_test_read_write(void)
   unsigned char buffer[BUFFER_CAPACITY];
   unsigned long buffer_size = 0;
 
+  /* Write a new file */
+  buffer[0] = 'H';
+  buffer[1] = 'e';
+  buffer[2] = 'l';
+  buffer[3] = 'l';
+  buffer[4] = 'o';
+  buffer[5] = ' ';
+  buffer[6] = 'P';
+  buffer[7] = 'I';
+  buffer[8] = 'O';
+  buffer[9] = '!';
+  buffer_size = 10;
+  assert(pio_write("testfile.txt", buffer, buffer_size));
   assert(pio_read("testfile.txt", buffer, BUFFER_CAPACITY, &buffer_size));
   assert(pio_file_size("testfile.txt") == buffer_size);
   assert(pio_write("outfile.txt", buffer, buffer_size));
