@@ -116,7 +116,11 @@ TEST_API TEST_INLINE void test_print_int(int val)
 #else
 
 #ifndef _UNISTD_H
+#ifdef __APPLE__
+extern int write(int fd, void *buf, unsigned long count);
+#else
 extern int write(int fd, void *buf, unsigned int count);
+#endif
 #define STDOUT_FILENO 1
 #endif /* _UNISTD_H */
 
