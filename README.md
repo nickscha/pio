@@ -51,16 +51,18 @@ int main() {
     (void) file_size;
 
     /* Print to console */
-    pio_print("Hello C89 nostdlib!\n");
+    if (!pio_print("Hello C89 nostdlib!\n")) {
+      return 1;
+    }
 
     /* Read entire file */
     if (!pio_read("testfile.txt", buffer, BUFFER_CAPACITY, &buffer_size)) {
-        return 1;
+      return 1;
     }
 
     /* Write entire file */
     if (!pio_write("outfile.txt", buffer, buffer_size)) {
-        return 1;
+      return 1;
     }
 
     /* Check if the written file has the same size as the input file */
