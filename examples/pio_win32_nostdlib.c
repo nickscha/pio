@@ -37,7 +37,43 @@ __attribute((force_align_arg_pointer))
 int
 mainCRTStartup(void)
 {
-  assert(1 == 1);
+#define BUFFER_CAPACITY 1024
+  unsigned char buffer[BUFFER_CAPACITY];
+  unsigned long buffer_size = 0;
+
+  pio_print("Starting win32 nostdlib\n");
+
+  /* Write a new file */
+  buffer[0] = 'H';
+  buffer[1] = 'e';
+  buffer[2] = 'l';
+  buffer[3] = 'l';
+  buffer[4] = 'o';
+  buffer[5] = ' ';
+  buffer[6] = 'P';
+  buffer[7] = 'I';
+  buffer[8] = 'O';
+  buffer[9] = '!';
+  buffer_size = 10;
+  assert(pio_write("testfile.txt", buffer, buffer_size));
+  assert(pio_read("testfile.txt", buffer, BUFFER_CAPACITY, &buffer_size));
+  assert(pio_file_size("testfile.txt") == buffer_size);
+  assert(pio_write("outfile.txt", buffer, buffer_size));
+  assert(pio_read("outfile.txt", buffer, BUFFER_CAPACITY, &buffer_size));
+  assert(pio_file_size("outfile.txt") == pio_file_size("testfile.txt"));
+
+  assert(buffer[0] == 'H');
+  assert(buffer[1] == 'e');
+  assert(buffer[2] == 'l');
+  assert(buffer[3] == 'l');
+  assert(buffer[4] == 'o');
+  assert(buffer[5] == ' ');
+  assert(buffer[6] == 'P');
+  assert(buffer[7] == 'I');
+  assert(buffer[8] == 'O');
+  assert(buffer[buffer_size - 1] == '!');
+
+  pio_print("Stopping win32 nostdlib\n");
 
   return 0;
 }
